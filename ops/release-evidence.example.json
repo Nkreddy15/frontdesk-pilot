@@ -1,0 +1,12 @@
+{
+  "nativeConcurrency": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "browserE2E": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "liveVoiceEvaluation": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "googleRoundTrip": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "smsConsentDeliveryOptOut": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "humanTransfer": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "supabaseSignIn": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "backupRestore": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "attorneyReview": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""},
+  "ownerCatalogApproval": {"passed": false, "artifact": "", "reviewedBy": "", "date": ""}
+}

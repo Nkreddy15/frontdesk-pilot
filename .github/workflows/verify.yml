@@ -1,0 +1,72 @@
+name: Verify receptionist
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  native-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-bookworm
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-isolated-owner-password
+          POSTGRES_DB: receptionist
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd 'pg_isready -U postgres -d receptionist'
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      NODE_ENV: test
+      USE_PGLITE: 'false'
+      DATABASE_URL: postgresql://receptionist_app:ci-isolated-app-password@127.0.0.1:5432/receptionist
+      MIGRATION_DATABASE_URL: postgresql://postgres:ci-isolated-owner-password@127.0.0.1:5432/receptionist
+      DATABASE_SSL: 'false'
+      SESSION_SECRET: ci-only-secret-never-use-in-production-0123456789
+      TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      DEV_AUTH_ENABLED: 'true'
+      DEV_AUTH_TOKEN: ci-only-browser-access-code
+      DASHBOARD_ORIGIN: http://localhost:3000
+      API_INTERNAL_URL: http://127.0.0.1:4000
+      API_HOST: 127.0.0.1
+      LIVE_VOICE_ENABLED: 'false'
+      SMS_ENABLED: 'false'
+      CALENDAR_ENABLED: 'false'
+      RECORDING_ENABLED: 'false'
+      WORKER_TENANT_IDS: 10000000-0000-4000-8000-000000000001
+      CONCURRENCY_ROUNDS: '100'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Create a separate runtime database role
+        run: >-
+          psql "$MIGRATION_DATABASE_URL" -v ON_ERROR_STOP=1 -c
+          "CREATE ROLE receptionist_app LOGIN PASSWORD 'ci-isolated-app-password'
+          NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS"
+      - run: npm run db:migrate
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+        env:
+          NODE_ENV: production
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm run db:seed
+      - run: npx playwright install --with-deps chromium
+      - name: Start local application for synthetic browser tests
+        run: npm run dev > /tmp/receptionist-dev.log 2>&1 &
+        env:
+          NODE_ENV: development
+      - name: Wait for dashboard
+        run: >-
+          node --input-type=module -e 'for(let i=0;i<90;i++){try{if((await fetch("http://localhost:3000/api/auth/config")).ok)process.exit(0)}catch{} await new Promise(r=>setTimeout(r,1000));}process.exit(1)'
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-browser-evidence
+          path: evidence/

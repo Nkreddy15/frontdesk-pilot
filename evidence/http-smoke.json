@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-22T23:03:11.573Z",
+  "passed": true,
+  "mode": "PostgreSQL-WASM",
+  "checks": [
+    "Next.js renders the dashboard document over HTTP",
+    "Proxy rejects unauthenticated business access",
+    "Local owner authentication sets a session cookie through the Next.js proxy",
+    "Manual booking commits once and retries return the same appointment through the proxy",
+    "Conflicts preserve HTTP 409 and three fresh alternatives through the proxy",
+    "Cancellation commits through the same API",
+    "Owner metrics include answered calls and explicit estimated costs",
+    "Operations and database audit records are readable by the owner"
+  ],
+  "liveProvidersExercised": false,
+  "browserRendered": false
+}

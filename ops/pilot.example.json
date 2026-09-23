@@ -1,0 +1,15 @@
+{
+  "businessName": "REPLACE WITH LEGAL BUSINESS NAME",
+  "ownerUserId": "00000000-0000-4000-8000-000000000000",
+  "locationName": "Main location",
+  "timezone": "America/New_York",
+  "address": "REPLACE WITH APPROVED PUBLIC ADDRESS",
+  "phone": "+15085550100",
+  "transferNumber": "+15085550101",
+  "hours": {"1": ["09:00", "18:00"], "2": ["09:00", "18:00"], "3": ["09:00", "18:00"], "4": ["09:00", "18:00"], "5": ["09:00", "18:00"]},
+  "staff": ["REPLACE WITH STAFF NAME"],
+  "bays": ["Detailing bay"],
+  "services": [
+    {"name": "REPLACE WITH APPROVED SERVICE", "description": "REPLACE WITH APPROVED DESCRIPTION", "durationMinutes": 60, "bufferBefore": 0, "bufferAfter": 15, "priceCents": 10000}
+  ]
+}

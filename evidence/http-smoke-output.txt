@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> receptionist@0.1.0 test:http
+> node scripts/http-smoke.mjs
+
+8 HTTP application smoke checks passed. No browser or live provider validation is implied.

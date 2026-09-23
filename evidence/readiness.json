@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-09-22T22:56:33.998Z",
+  "ready": false,
+  "checks": [
+    {
+      "name": "Configuration syntax",
+      "pass": true,
+      "detail": "Validated; credentials are never printed."
+    },
+    {
+      "name": "Native PostgreSQL",
+      "pass": false,
+      "detail": "Production and multi-process concurrency require native PostgreSQL."
+    },
+    {
+      "name": "Development access disabled",
+      "pass": false,
+      "detail": "Disable DEV_AUTH_ENABLED before public deployment."
+    },
+    {
+      "name": "HTTPS URLs",
+      "pass": false,
+      "detail": "Supply the actual deployed API and dashboard URLs."
+    },
+    {
+      "name": "Supabase authentication configuration",
+      "pass": false,
+      "detail": "Configuration only; real sign-in still needs a smoke test."
+    },
+    {
+      "name": "OpenAI configuration",
+      "pass": false,
+      "detail": "Configuration only; verify model access, latency, and spend caps."
+    },
+    {
+      "name": "Twilio configuration",
+      "pass": false,
+      "detail": "Configuration only; verify signed inbound call and message callbacks."
+    },
+    {
+      "name": "Google configuration",
+      "pass": false,
+      "detail": "Configuration only; owner OAuth and event synchronization must be exercised."
+    },
+    {
+      "name": "Release evidence: nativeConcurrency",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: browserE2E",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: liveVoiceEvaluation",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: googleRoundTrip",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: smsConsentDeliveryOptOut",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: humanTransfer",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: supabaseSignIn",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: backupRestore",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: attorneyReview",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    },
+    {
+      "name": "Release evidence: ownerCatalogApproval",
+      "pass": false,
+      "detail": "Requires dated evidence, artifact reference, and named reviewer. A declaration alone is not validation."
+    }
+  ]
+}

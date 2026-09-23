@@ -1,0 +1,49 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> receptionist@0.1.0 test
+> node scripts/test.mjs
+
+✔ committed booking has exactly two resource claims, audit, and outbox (65.110577ms)
+✔ 50 simultaneous API requests: one commit and 49 conflicts with three alternatives (harness behavior only when WASM) (982.844786ms)
+ℹ 50-request application test uses serialized PostgreSQL-WASM. Native multi-process gate NOT satisfied.
+✔ replayed requests have one appointment and reject changed payload (26.184871ms)
+✔ held slot blocks owner; no messages before confirmation; receipt follows commit (51.262685ms)
+✔ expired hold is released inside booking transaction (43.528758ms)
+✔ buffers overlap; touching endpoints permitted; failed reschedule preserves original (169.844687ms)
+✔ database exclusion independently rejects a direct insert that skips availability code (33.285345ms)
+✔ different staff cannot double book the same bay; time off rejects overlap (44.395738ms)
+✔ cancel releases claims, retains audit, and stale writes fail (53.726743ms)
+✔ tenant isolation is enforced by RLS and protected projections cannot be written (27.850917ms)
+✔ API rejects unauthenticated, forged origin, missing CSRF, and unknown input fields (46.458551ms)
+﹣ NATIVE RELEASE GATE: 100 rounds x 50 requests across two API processes (1.034717ms) # Requires native PostgreSQL. WASM serialization is not a native concurrency proof.
+﹣ NATIVE RELEASE GATE: another connection cannot read notification jobs before commit (0.119039ms) # Requires two native PostgreSQL connections; the WASM harness serializes transactions.
+✔ receptionist never confirms during availability or hold; confirmation follows committed receipt (171.470343ms)
+✔ telephone confirmation requires completed readback playback, not a cleared mark (135.027163ms)
+✔ owner wins offered slot; receptionist reports conflict and three fresh choices (70.565473ms)
+✔ correction releases the old hold and duplicate actions do not create a second booking (115.061181ms)
+✔ dropped call saves a follow-up and releases unconfirmed inventory (80.833639ms)
+✔ reference and callback verification are required for caller cancellation (85.26708ms)
+✔ unpublished knowledge is never returned; unsupported request creates a lead (60.358951ms)
+✔ audio codec preserves sample count, silence, sign, and bounded speech error (3.066985ms)
+✔ out-of-order transcription completion is processed in committed turn order (0.402125ms)
+✔ OAuth tokens use authenticated encryption and reject tampering (1.154077ms)
+✔ simulated ambiguous SMS timeout becomes UNKNOWN and is never automatically sent again (82.560948ms)
+✔ disabled providers are blocked honestly without a fabricated delivery receipt (35.129629ms)
+✔ signed duplicate message callbacks are deduplicated and delivery does not regress (157.626633ms)
+✔ external Google overlap pauses new bookings without cancelling the authoritative appointment (40.639124ms)
+✔ signed ended call without an AI session creates one follow-up despite duplicate callbacks (37.975891ms)
+✔ deleted app-managed Google event raises an exception; database booking survives (29.365466ms)
+✔ simulated Google 410 resets sync token and completes a full reconciliation (20.639576ms)
+✔ deletion refuses active bookings, then redacts terminal notes and cached receipts (285.828749ms)
+✔ unresolved Google conflict prevents unpause; observed deletion resolves it without cancelling a booking (103.542746ms)
+✔ workers cannot claim another version of an entity while its job is running (38.976506ms)
+✔ ended conversations cannot perform new booking actions but replay their completed action (35.92104ms)
+✔ viewer cannot mutate appointments or owner settings (32.868656ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 17688.213001

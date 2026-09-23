@@ -1,0 +1,21 @@
+# Local PostgreSQL; run npm run setup:docker to generate isolated passwords.
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: receptionist
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run npm run setup:docker}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Run npm run setup:docker}
+    ports:
+      - '127.0.0.1:55432:5432'
+    volumes:
+      - receptionist_pg:/var/lib/postgresql/data
+      - ./ops/init-db.sh:/docker-entrypoint-initdb.d/10-receptionist.sh:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d receptionist']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  receptionist_pg:

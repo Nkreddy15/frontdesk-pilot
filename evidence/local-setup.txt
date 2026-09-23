@@ -1,0 +1,7 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> receptionist@0.1.0 setup:wasm
+> node --import tsx scripts/setup-wasm.ts && node --import tsx scripts/seed.ts
+
+WASM harness initialized. Run npm run db:seed. Native concurrency verification is still required.
+Seeded a clearly labeled demonstration business. No real customer data.

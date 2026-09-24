@@ -166,7 +166,7 @@ export async function buildApp(options: { logger?: boolean } = {}) {
       ).rows,
       blocks: (
         await tx.query(
-          'SELECT b.*,r.name AS resource_name FROM resource_blocks b JOIN resources r ON b.resource_id=r.id WHERE active AND starts_at<$2 AND ends_at>$1 ORDER BY starts_at',
+          'SELECT b.*,r.name AS resource_name FROM resource_blocks b JOIN resources r ON b.resource_id=r.id WHERE b.active AND b.starts_at<$2 AND b.ends_at>$1 ORDER BY b.starts_at',
           [q.from, q.to],
         )
       ).rows,

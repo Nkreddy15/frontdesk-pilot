@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import dotenv from 'dotenv';
+import pg from 'pg';
 if (process.env.NODE_ENV === 'production')
   throw new Error('This command is for local development only.');
 await mkdir('.local', { recursive: true, mode: 0o700 });
@@ -66,6 +67,22 @@ const code = await new Promise((resolve, reject) => {
   child.on('exit', resolve);
 });
 if (code !== 0) throw new Error('Docker PostgreSQL failed to start.');
+// PostgreSQL only executes entrypoint init scripts on a brand-new data volume.
+// A reused local volume may be healthy without the restricted application role.
+// The password is generated hex, so it can safely be used in this SQL literal.
+const owner = new pg.Client({ connectionString: values.MIGRATION_DATABASE_URL });
+await owner.connect();
+try {
+  await owner.query('SELECT pg_advisory_lock(7843120)');
+  const existing = await owner.query("SELECT 1 FROM pg_roles WHERE rolname = 'receptionist_app'");
+  const roleAction = existing.rowCount ? 'ALTER ROLE' : 'CREATE ROLE';
+  await owner.query(
+    `${roleAction} receptionist_app LOGIN PASSWORD '${appPass}' NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS`,
+  );
+} finally {
+  await owner.query('SELECT pg_advisory_unlock(7843120)').catch(() => {});
+  await owner.end();
+}
 console.log(
-  'Native PostgreSQL is ready at 127.0.0.1:55432. Applying migrations is the next setup step.',
+  'Native PostgreSQL and the application role are ready at 127.0.0.1:55432. Applying migrations is the next setup step.',
 );

@@ -3,6 +3,30 @@ on: [push, pull_request]
 permissions:
   contents: read
 jobs:
+  compose-bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Start native database and create local application role
+        run: node scripts/setup-docker.mjs
+      - name: Reproduce a healthy volume missing the application role
+        run: >-
+          docker compose --env-file .local/docker.env exec -T db
+          psql -U postgres -d receptionist -v ON_ERROR_STOP=1
+          -c 'DROP ROLE receptionist_app'
+      - name: Repair role, apply migrations and seed
+        run: npm run setup:docker
+      - name: Verify setup can run again on the same volume
+        run: npm run setup:docker
+      - name: Remove CI-only PostgreSQL volume
+        if: always()
+        run: docker compose --env-file .local/docker.env down -v
   native-postgres:
     runs-on: ubuntu-latest
     timeout-minutes: 20

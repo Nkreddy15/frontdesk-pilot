@@ -13,7 +13,9 @@ services:
       - receptionist_pg:/var/lib/postgresql/data
       - ./ops/init-db.sh:/docker-entrypoint-initdb.d/10-receptionist.sh:ro
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres -d receptionist']
+      # The image starts a temporary socket-only server before running init scripts.
+      # Require TCP readiness so migrations cannot race the first role creation.
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U postgres -d receptionist']
       interval: 2s
       timeout: 3s
       retries: 30

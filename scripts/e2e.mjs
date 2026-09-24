@@ -23,6 +23,12 @@ try {
     await page.getByLabel('Local owner access code').fill(process.env.DEV_AUTH_TOKEN);
     await page.getByRole('button', { name: 'Open workspace', exact: true }).click();
     await page.getByRole('heading', { name: 'A clear view of your day.' }).waitFor();
+    const scheduleStatus = await page.evaluate(async () => {
+      const from = new Date(Date.now() - 86400000).toISOString();
+      const to = new Date(Date.now() + 7 * 86400000).toISOString();
+      return (await fetch('/api/v1/appointments?' + new URLSearchParams({ from, to }))).status;
+    });
+    assert.equal(scheduleStatus, 200, 'Owner schedule API must load');
   });
   await page.screenshot({ path: 'evidence/dashboard-desktop.png', fullPage: true });
   await check(
